@@ -1,0 +1,13 @@
+{
+  "name": "Coffee Clicker",
+  "short_name": "Coffee",
+  "description": "Браузерный кликер про кофе с офлайном и престижем.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fff6e0",
+  "theme_color": "#d4a373",
+  "icons": [
+    { "src": "icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "icons/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

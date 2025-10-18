@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Coffee Clicker ☕</title>
+  <meta name="description" content="Лёгкий браузерный кликер про кофе: кликай, апгрейдь, делай престиж и играй офлайн." />
+  <meta name="theme-color" content="#d4a373" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Coffee Clicker ☕" />
+  <meta property="og:description" content="Лёгкий браузерный кликер про кофе с офлайн-режимом." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="icons/icon-512.svg" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Coffee Clicker ☕" />
+  <meta name="twitter:description" content="Лёгкий браузерный кликер про кофе с офлайн-режимом." />
+  <meta name="twitter:image" content="icons/icon-192.svg" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/icon-192.svg" />
+
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="game">
+    <header class="header">
+      <div class="mug" aria-hidden="true">
+        <div class="mug-body"></div>
+        <div class="mug-handle"></div>
+        <div class="steam"><span></span><span></span><span></span></div>
+      </div>
+
+      <h1 id="beans" class="counter">☕ 0</h1>
+
+      <!-- Панель настроек -->
+      <div id="settings">
+        <label class="switch">
+          <input type="checkbox" id="soundToggle" checked />
+          <span class="slider"></span>
+        </label>
+        <span class="setting-label" id="soundLabel">Звук: Вкл</span>
+      </div>
+    </header>
+
+    <button id="brewButton">Заварить кофе</button>
+
+    <div id="stats">
+      <div><span class="label">За клик:</span> <span id="perClick">1</span></div>
+      <div><span class="label">В секунду:</span> <span id="perSecond">0</span></div>
+      <div><span class="label">Бонус престижа:</span> <span id="prestigeBonus">0 %</span></div>
+      <div><span class="label">Очки престижа:</span> <span id="prestigePoints">0</span></div>
+      <div><span class="label">Всего сварено (ран):</span> <span id="totalBrewed">0</span></div>
+      <div><span class="label">Всего сварено (lifetime):</span> <span id="lifetimeBrewed">0</span></div>
+      <div><span class="label">Мягкий бонус:</span> <span id="lifetimeBonus">0 %</span></div>
+    </div>
+
+    <!-- Улучшения престижа -->
+    <section id="prestigeUpgrades">
+      <h2>Улучшения престижа</h2>
+      <div id="prestigeUpgradeList"></div>
+      <p class="small-hint">Покупаются за очки престижа и действуют постоянно.</p>
+    </section>
+
+    <!-- Престиж -->
+    <section id="prestigePanel">
+      <h2>Престиж</h2>
+      <p>Доступен после 10 000 зёрен. Сбрасывает ран и даёт очки престижа.</p>
+      <div class="prestige-row">
+        <button id="prestigeBtn" class="prestigeBtn" disabled>⚡ Совершить престиж</button>
+        <div class="run-metrics">
+          <div><span class="label">Время рана:</span> <span id="runTime">00:00</span></div>
+          <div><span class="label">Пик зёрен:</span> <span id="peakBeans">0</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Апгрейды -->
+    <div id="upgrades">
+      <button id="upgradeClick" class="upgrade">
+        🔧 Клик (+1)<br><small>Цена: <span id="clickCost">10</span></small>
+      </button>
+      <button id="upgradeAuto" class="upgrade">
+        🤖 Автокликер (+1/с)<br><small>Цена: <span id="autoCost">100</span></small>
+      </button>
+    </div>
+
+    <!-- Таблица лидеров (локальная) -->
+    <section id="leaderboard">
+      <h2>Лига бариста (локальная)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Очки престижа</th><th>Время до престижа</th><th>Пик зёрен</th><th>Дата</th>
+          </tr>
+        </thead>
+        <tbody id="lbBody"></tbody>
+      </table>
+      <p class="small-hint">Сохраняется только в твоём браузере.</p>
+    </section>
+
+    <!-- Сохранение -->
+    <div id="saveBar">
+      <button id="btnSave" class="control">💾 Сохранить</button>
+      <button id="btnReset" class="control danger">♻️ Полный сброс</button>
+      <div id="saveHint"></div>
+    </div>
+  </div>
+
+  <!-- FX -->
+  <div id="fx-layer"></div>
+  <div id="toasts" aria-live="polite" aria-atomic="true"></div>
+  <div id="screenFlash" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+  <script>
+    // Регистрация Service Worker для офлайна/кеша
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(()=>{});
+      });
+    }
+  </script>
+  <noscript>Для игры нужен JavaScript.</noscript>
+</body>
+</html>
